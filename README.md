@@ -1,5 +1,3 @@
 # ᴅᴇɪɴᴇ :: ɢᴀʀᴅᴇʀᴏʙᴇ
 
----
-
-E-commerce
+E-commerce | Stripe
