@@ -1,11 +1,42 @@
+.theme-white {
+  --background-color: white;
+  --text-color: black;
+}
+
+.theme-dark {
+  --background-color: black;
+  --text-color: white;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  // margin: 0
+}
+
+html:focus-within {
+  scroll-behavior: smooth;
+}
+
 body {
   margin: 0;
   font-family: 'Fira Sans Condensed', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+a {
+  text-decoration: none;
+  // color: #000;
+}
+
+p, h1, h2, h3, h4, h5, h6 {
+  overflow-wrap: break-word;
 }
