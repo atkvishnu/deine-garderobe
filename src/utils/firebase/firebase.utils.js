@@ -4,7 +4,7 @@ import { initializeApp } from "firebase/app";
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 // auth 
-import { getAuth, signInWithRedirect, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
+import { getAuth, signInWithRedirect, signInWithPopup, GoogleAuthProvider, createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
 
 import { getFirestore, doc, getDoc, setDoc } from 'firebase/firestore';
 
@@ -34,7 +34,9 @@ export const signInWithGoogleRedirect = () => signInWithRedirect(auth, googlePro
 
 export const db = getFirestore();
 
-export const createUserDocumentFromAuth = async (userAuth) => {
+export const createUserDocumentFromAuth = async (userAuth, additionalInformation = {}) => {
+    if (!userAuth) return;
+
     const userDocRef = doc(db, 'users', userAuth.uid);
     // console.log("🚀userDocRef : ", { userDocRef });
 
@@ -52,9 +54,9 @@ export const createUserDocumentFromAuth = async (userAuth) => {
         const { displayName, email } = userAuth;
         const createdAt = new Date();
         try {
-            await setDoc(userDocRef, { displayName, email, createdAt });
+            await setDoc(userDocRef, { displayName, email, createdAt, ...additionalInformation });
         } catch (error) {
-            console.log('Error: Error creating the user!', error.message);
+            console.log('Error: Error creating the user!', error.errors.message);
         }
     }
 
@@ -63,6 +65,8 @@ export const createUserDocumentFromAuth = async (userAuth) => {
 
 
 export const createUserDocumentFromRedirect = async (userAuth) => {
+    if (!userAuth) return;
+
     const userDocRef = doc(db, 'usersFromRedirect', userAuth.uid);
     console.log("🚀userDocRef : ", { userDocRef });
 
@@ -87,5 +91,18 @@ export const createUserDocumentFromRedirect = async (userAuth) => {
     }
 
     return userDocRef;
+};
 
+export const createAuthUserWithEmailAndPassword = async (email, password) => {
+    if (!email || !password) {
+        return;     // 404 kind page component
+    }
+    return await createUserWithEmailAndPassword(auth, email, password);
+}
+
+export const signInAuthUserWithEmailAndPassword = async (email, password) => {
+    if (!email || !password) {
+        return;     // 404 kind page component
+    }
+    return await signInWithEmailAndPassword(auth, email, password);
 }
