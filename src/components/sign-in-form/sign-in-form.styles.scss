@@ -1,0 +1,33 @@
+.required {
+    font-weight: bold;
+}
+.required:after {
+    color: #e32;
+    content: '* ';
+    display:inline;
+}
+.sign-in-container {
+    display: flex;
+    flex-direction: column;
+    width: 380px;
+
+    h2 {
+        margin: 10 px 0;
+    }
+
+    .buttons-container {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .google-container {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        width: 120px;
+    }
+
+}
+
