@@ -4,7 +4,13 @@ import { initializeApp } from "firebase/app";
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 // auth 
-import { getAuth, signInWithRedirect, signInWithPopup, GoogleAuthProvider, createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
+import {
+    GoogleAuthProvider, getAuth,
+    signInWithRedirect, signInWithPopup, signInWithEmailAndPassword,
+    createUserWithEmailAndPassword,
+    signOut,
+    onAuthStateChanged
+} from 'firebase/auth';
 
 import { getFirestore, doc, getDoc, setDoc } from 'firebase/firestore';
 
@@ -106,3 +112,17 @@ export const signInAuthUserWithEmailAndPassword = async (email, password) => {
     }
     return await signInWithEmailAndPassword(auth, email, password);
 }
+
+
+export const signOutUser = async () => await signOut(auth);
+
+// Observer Listener (Permanant Listener)
+// onAuthStateChanged is a function that will be called when the user is signed in or out
+// onAuthStateChanged takes 2 arguments: 1st one is auth, 2nd one is a callback which will be called when this auth state changes.
+// as we are defining the callback as our own method, we have to pass callback as a parameter 
+//     whenever we are instantiating the onAuthStateChangedListener we have to pass the callback as a parameter
+//      won't work if callback is not passed as a parameter
+// onAuthStateChangedListener will call this callback whenever auth singleton changes (when user signin/ signout auth changes, hance this fn. will be called) 
+// this is a permanent listener and will be called everytime the auth state changes
+// we have to stop this listener when we are not using it anymore (when the component is unmounted), if we don't unmount it then we will get a memory leak.
+export const onAuthStateChangedListener = (callback) => onAuthStateChanged(auth, callback);

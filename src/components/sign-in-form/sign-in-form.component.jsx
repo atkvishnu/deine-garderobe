@@ -1,9 +1,10 @@
 import './sign-in-form.styles.scss';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { auth, signInWithGooglePopup, signInWithGoogleRedirect, createUserDocumentFromAuth, createAuthUserWithEmailAndPassword, signInAuthUserWithEmailAndPassword } from '../../utils/firebase/firebase.utils';
 import { getRedirectResult } from 'firebase/auth';
 
+import { UserContext } from '../../contexts/user.context';
 
 import FormInput from '../form-input/form-input.component';
 import Button from '../button/button.component';
@@ -16,10 +17,12 @@ const defaultFormFields = {     // common ground between logic of state manageme
 
 const SignInForm = () => {
 
+    const { setCurrentUser } = useContext(UserContext);
+
     const [formFields, setFormFields] = useState(defaultFormFields);
     const { email, password } = formFields;   // destructuring defaultFormFields
 
-    console.log(formFields);
+    // console.log(formFields);
 
 
     const resetFormFields = () => {
@@ -31,8 +34,10 @@ const SignInForm = () => {
         event.preventDefault();     // prevent default behavior of the form
 
         try {
-            const response = await signInAuthUserWithEmailAndPassword(email, password);
-            console.log(response);
+            const { user } = await signInAuthUserWithEmailAndPassword(email, password);
+            // console.log(response);
+            setCurrentUser(user);
+            console.log(user);
             resetFormFields();  // clear the form fields
         } catch (error) {
 
@@ -76,10 +81,11 @@ const SignInForm = () => {
     // We are getting the user data via. the getRedirectResult(auth) function (in useEffect).
 
     // I want to run a use effect, and I want to run this when this application mounts.
+    /*
     useEffect(() => {
         async function fetchRedirectData() {        // this is an asynchronous method, getting the redirect result is asynchronous.
             const response = await getRedirectResult(auth);
-            console.log(response);
+            // console.log(response);
             if (response) {
                 const userDocRef = await createUserDocumentFromAuth(response.user);
                 console.table(userDocRef);
@@ -87,11 +93,13 @@ const SignInForm = () => {
         }
         fetchRedirectData();    // The function here being our callback inside, I want to call, get redirected result, get redirect result.
     }, []);
+    */
     // When you pass a empty array (dependency array), it means that to run this function once when this component mounts for the first time.
 
 
     const signInWithGoogle = async () => {
         const { user } = await signInWithGooglePopup();
+        setCurrentUser(user);
         await createUserDocumentFromAuth(user);
         // console.table(userDocRef);
     }
