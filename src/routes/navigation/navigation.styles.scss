@@ -1,16 +1,27 @@
 .navigation {
-  height: 70px;
+  height: 100px;
   width: 100%;
   display: flex;
   justify-content: space-between;
-  margin-bottom: 25px;
 
   .logo-container {
-    margin: 0px 0 0 15px;
-    height: 100%;
-    width: 70px;
+    background: none;
+    height: 100px;
+    width: 100px;
     padding: 25px;
+    
+    &:hover {
+      cursor: pointer;
+      -webkit-animation:spin 0.5s linear infinite;
+      -moz-animation:spin 0.5s linear infinite;
+      animation:spin 0.5s linear infinite;
+      @-moz-keyframes spin { 100% { -moz-transform: rotate(-360deg); } }
+      @-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
+      @keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }
+    }
   }
+
+  
 
   .nav-links-container {
     width: 50%;
@@ -18,12 +29,13 @@
     display: flex;
     align-items: center;
     justify-content: flex-end;
+    padding-right: 10px;
+    
 
     .nav-link {
       padding: 20px 25px;
-      margin-top: 20px;
-      margin-right: 20px;
       cursor: pointer;
+      user-select: none;
     }
   }
 }

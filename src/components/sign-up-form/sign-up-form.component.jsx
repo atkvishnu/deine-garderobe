@@ -1,11 +1,10 @@
 import './sign-up-form.styles.scss';
 
-import { useState, useContext } from 'react';
+import { useState } from 'react';
 import { createAuthUserWithEmailAndPassword, createUserDocumentFromAuth } from '../../utils/firebase/firebase.utils';
 import FormInput from '../form-input/form-input.component';
 import Button from '../button/button.component';
 
-import { UserContext } from '../../contexts/user.context';
 
 // password is sensitive info., so we need to use firebase auth.
 // firebase auth will figure whether or not the password matches with the user (it's obfuscated from us)
@@ -21,8 +20,7 @@ const SignUpForm = () => {
     const [formFields, setFormFields] = useState(defaultFormFields);
     const { displayName, email, password, confirmPassword } = formFields;   // destructuring defaultFormFields
 
-    const { setCurrentUser } = useContext(UserContext);     // setCurrentUser is the setter fn. for currentUser in UserContext
-    console.log('hit')
+    // console.log('hit')
     // console.log(formFields);
 
 
@@ -41,8 +39,7 @@ const SignUpForm = () => {
 
         try {
             const { user } = await createAuthUserWithEmailAndPassword(email, password);
-            // console.log(response);
-            setCurrentUser(user);       // set currentUser in UserContext
+            // setCurrentUser(user);       // set currentUser in UserContext
             await createUserDocumentFromAuth(user, { displayName });
             resetFormFields();  // clear the form fields
         } catch (error) {

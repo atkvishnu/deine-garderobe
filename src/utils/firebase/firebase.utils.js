@@ -77,9 +77,7 @@ export const createUserDocumentFromRedirect = async (userAuth) => {
     console.log("🚀userDocRef : ", { userDocRef });
 
     const userSnapshot = await getDoc(userDocRef);
-    // console.log(`userSnapshot:`);
     // console.log(userSnapshot);
-    // console.log(userSnapshot.exists());
 
     // if user data exists
     // if user data does not exists
@@ -110,6 +108,7 @@ export const signInAuthUserWithEmailAndPassword = async (email, password) => {
     if (!email || !password) {
         return;     // 404 kind page component
     }
+    console.log(auth);
     return await signInWithEmailAndPassword(auth, email, password);
 }
 

@@ -1,10 +1,9 @@
 import './sign-in-form.styles.scss';
 
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect } from 'react';
 import { auth, signInWithGooglePopup, signInWithGoogleRedirect, createUserDocumentFromAuth, createAuthUserWithEmailAndPassword, signInAuthUserWithEmailAndPassword } from '../../utils/firebase/firebase.utils';
 import { getRedirectResult } from 'firebase/auth';
 
-import { UserContext } from '../../contexts/user.context';
 
 import FormInput from '../form-input/form-input.component';
 import Button from '../button/button.component';
@@ -17,7 +16,6 @@ const defaultFormFields = {     // common ground between logic of state manageme
 
 const SignInForm = () => {
 
-    const { setCurrentUser } = useContext(UserContext);
 
     const [formFields, setFormFields] = useState(defaultFormFields);
     const { email, password } = formFields;   // destructuring defaultFormFields
@@ -36,7 +34,7 @@ const SignInForm = () => {
         try {
             const { user } = await signInAuthUserWithEmailAndPassword(email, password);
             // console.log(response);
-            setCurrentUser(user);
+            // setCurrentUser(user);
             console.log(user);
             resetFormFields();  // clear the form fields
         } catch (error) {
@@ -63,24 +61,6 @@ const SignInForm = () => {
         setFormFields({ ...formFields, [name]: value });    // spread all the values, and modifying one value at a time([name]: value), in the place of name, event.target value is used
     }
 
-
-    /**/
-    // our website redirected us entirely to a new separate domain. When we came back. Our website does not know that there was some previous instant of state of this website that we were being paused for.
-    // When you navigate away from a URL, the website thinks, I'm going to unmount the entire application.
-    // When we came back, we essentially reinitialize our entire application from the start from scratch, meaning that any previously held functions that we were perhaps in the middle of doesn't matter anymore.
-    // There's no way to continue from there.
-    // We need to use a different way in order to actually track this type of information
-    // First we're going to need to:
-    // - import useEffect from React.
-    // - import { getRedirectResult } from 'firebase/auth';
-    // - import { auth, ... } from '../../utils/firebase/firebase.utils';
-    // auth will get the `getRedirectResult` result.
-    // Now we transfered logGoogleRedirectUser() to useEffect
-    // We are directly calling the signInWithGoogleRedirect() function from the "Log in with google redirect" button.
-    // We are awaiting the result of the signInWithGoogleRedirect() function in the useEffect() hook.
-    // We are getting the user data via. the getRedirectResult(auth) function (in useEffect).
-
-    // I want to run a use effect, and I want to run this when this application mounts.
     /*
     useEffect(() => {
         async function fetchRedirectData() {        // this is an asynchronous method, getting the redirect result is asynchronous.
@@ -98,10 +78,8 @@ const SignInForm = () => {
 
 
     const signInWithGoogle = async () => {
-        const { user } = await signInWithGooglePopup();
-        setCurrentUser(user);
-        await createUserDocumentFromAuth(user);
-        // console.table(userDocRef);
+        await signInWithGooglePopup();
+        // setCurrentUser(user);
     }
 
     // const logGoogleRedirectUser = async () => {
@@ -111,10 +89,6 @@ const SignInForm = () => {
     // }
 
     /**/
-
-
-
-
 
     return (
         <div className='sign-in-container'>
