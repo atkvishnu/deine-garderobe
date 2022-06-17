@@ -8,6 +8,7 @@ import Shop from './routes/shop/shop.component';
 
 import Authentication from './routes/authentication/authentication.component.jsx';
 
+import Checkout from './routes/checkout/checkout.component';
 
 
 const App = () => {
@@ -23,6 +24,7 @@ const App = () => {
                     </main>
                 }
                 />
+                <Route path="checkout" element={<Checkout />} />
             </Route>
         </Routes >
     )
