@@ -9,10 +9,11 @@ import {
     signInWithRedirect, signInWithPopup, signInWithEmailAndPassword,
     createUserWithEmailAndPassword,
     signOut,
-    onAuthStateChanged
+    onAuthStateChanged,
+
 } from 'firebase/auth';
 
-import { getFirestore, doc, getDoc, setDoc } from 'firebase/firestore';
+import { getFirestore, doc, getDoc, setDoc, collection, writeBatch, query, getDocs } from 'firebase/firestore';
 
 
 // Your web app's Firebase configuration
@@ -40,13 +41,48 @@ export const signInWithGoogleRedirect = () => signInWithRedirect(auth, googlePro
 
 export const db = getFirestore();
 
+
+// used once when pushing data to firebase. DO NOT USE again.
+// method to upload SHOP_DATA object(comprising of titles and item array) into firestore.
+export const addCollectionAndDocuments = async (collectionKey, objectsToAdd) => {
+    const collectionRef = collection(db, collectionKey);        // get the collection reference
+    const batch = writeBatch(db);       // create a batch to write to firestore
+
+    // loop through the objects to add and add each one to the batch
+    objectsToAdd.forEach((object) => {  // for each object in the array, add it to the batch.
+        const docRef = doc(collectionRef, object.title.toLowerCase());  // create a document reference for each object in the array
+        batch.set(docRef, object); // set() method is used to add a new document to a collection.
+    });
+
+    await batch.commit();       // commit the batch to firestore.
+    console.log('done');
+}
+
+
+export const getCategoriesAndDocuments = async () => {
+    const collectionRef = collection(db, 'categories');     // get the collection named 'categories'
+    const q = query(collectionRef);                 // create a query for the collectionRef
+
+    const querySnapshot = await getDocs(q);
+    const categoryMap = querySnapshot.docs.reduce((acc, docSnapshot) => {   // reduce the querySnapshot to a map of categories and their documents
+        const { title, items } = docSnapshot.data();        // get the title and items from the document
+        acc[title.toLowerCase()] = items;                   // add the title and items to the map
+        return acc;                                         // return the map
+    }, {})
+
+    return categoryMap;                     // return the map
+}
+
+
+
+// additionalInformation is an object containing the additional information to be added to the user's profile.
 export const createUserDocumentFromAuth = async (userAuth, additionalInformation = {}) => {
     if (!userAuth) return;
 
-    const userDocRef = doc(db, 'users', userAuth.uid);
+    const userDocRef = doc(db, 'users', userAuth.uid);  // create a document reference for the user
     // console.log("🚀userDocRef : ", { userDocRef });
 
-    const userSnapshot = await getDoc(userDocRef);
+    const userSnapshot = await getDoc(userDocRef);      // get the user document from firestore
     // console.log(`userSnapshot:`);
     // console.log(userSnapshot);
     // console.log(userSnapshot.exists());
