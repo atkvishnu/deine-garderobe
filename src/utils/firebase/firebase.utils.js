@@ -18,12 +18,12 @@ import { getFirestore, doc, getDoc, setDoc, collection, writeBatch, query, getDo
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-    apiKey: process.env.REACT_APP_API_KEY,
-    authDomain: process.env.REACT_APP_AUTH_DOMAIN,
-    projectId: process.env.REACT_APP_PROJECT_ID,
-    storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
-    messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
-    appId: process.env.REACT_APP_APP_ID
+    apiKey: "AIzaSyBYGDn-q8YiYeU4WoCkQ6p6e3aY7-JxAA4",
+    authDomain: "deine-garderobe-db.firebaseapp.com",
+    projectId: "deine-garderobe-db",
+    storageBucket: "deine-garderobe-db.appspot.com",
+    messagingSenderId: "178206197434",
+    appId: "1:178206197434:web:c70079fc00bf796a61a483",
 };
 
 // Initialize Firebase
