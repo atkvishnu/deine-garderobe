@@ -34,7 +34,7 @@ export const Arrow = styled.div`
 `;
 
 export const Value = styled(BaseSpan)`
-    margin: 3px 15px 0 15px;;
+    margin: 3px -25px 0 15px;;
 `;
 
 export const RemoveButton = styled.div`
