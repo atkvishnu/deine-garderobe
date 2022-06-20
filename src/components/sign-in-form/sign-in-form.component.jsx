@@ -1,4 +1,4 @@
-import './sign-in-form.styles.scss';
+import { SignInContainer, ButtonsContainer } from './sign-in-form.styles.jsx';
 
 import { useState, useEffect } from 'react';
 import { auth, signInWithGooglePopup, signInWithGoogleRedirect, createUserDocumentFromAuth, createAuthUserWithEmailAndPassword, signInAuthUserWithEmailAndPassword } from '../../utils/firebase/firebase.utils';
@@ -6,7 +6,7 @@ import { getRedirectResult } from 'firebase/auth';
 
 
 import FormInput from '../form-input/form-input.component';
-import Button from '../button/button.component';
+import Button, { BUTTON_TYPE_CLASSES } from '../button/button.component';
 // password is sensitive info., so we need to use firebase auth.
 // firebase auth will figure whether or not the password matches with the user (it's obfuscated from us)
 const defaultFormFields = {     // common ground between logic of state management
@@ -16,17 +16,14 @@ const defaultFormFields = {     // common ground between logic of state manageme
 
 const SignInForm = () => {
 
-
     const [formFields, setFormFields] = useState(defaultFormFields);
     const { email, password } = formFields;   // destructuring defaultFormFields
 
     // console.log(formFields);
 
-
     const resetFormFields = () => {
         setFormFields(defaultFormFields);
     }
-
 
     const handleSubmit = async (event) => {
         event.preventDefault();     // prevent default behavior of the form
@@ -49,11 +46,8 @@ const SignInForm = () => {
                 default:
                     console.log(error);
             }
-
         }
     }
-
-
 
     // generic fn storing and setting the defaultFormFields
     const handleChange = (event) => {       // generic event handler
@@ -91,22 +85,27 @@ const SignInForm = () => {
     /**/
 
     return (
-        <div className='sign-in-container'>
+        <SignInContainer>
             <h2>Already have an account?</h2>
             <span>Sign in with email and password.</span>
             <form onSubmit={handleSubmit} >
                 <FormInput label="Email" type='email' required onChange={handleChange} name="email" value={formFields.email} />
                 <FormInput label="Password" type='password' required onChange={handleChange} name="password" value={formFields.password} />
 
-                <div className='buttons-container'>
-                    <Button buttonType='default' type='submit'>Sign In</Button>
-                    {/* <div className='google-container'> */}
-                    <Button type='button' buttonType='google' onClick={signInWithGoogle}>Google Sign In</Button>
-                    {/* <Button buttonType='google' onClick={signInWithGoogleRedirect}></Button> */}
+                <ButtonsContainer>
+                    <Button buttonType={BUTTON_TYPE_CLASSES.base} type='submit'>Sign In</Button>
+                    <Button
+                        type='button'
+                        buttonType={BUTTON_TYPE_CLASSES.google}
+                        onClick={signInWithGoogle}
+                    >
+                        Google Sign In
+                    </Button>
+                    {/* <Button buttonType={BUTTON_TYPE_CLASSES.google} onClick={signInWithGoogleRedirect}></Button> */}
                     {/* </div> */}
-                </div>
+                </ButtonsContainer>
             </form>
-        </div>
+        </SignInContainer>
     );
 };
 

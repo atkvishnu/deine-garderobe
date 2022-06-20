@@ -1,15 +1,18 @@
-.navigation {
-  height: 100px;
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
+import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
-  .logo-container {
+export const NavigationContainer = styled.div`
+    height: 100px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+`;
+
+export const LogoContainer = styled(Link)`
     background: none;
     height: 100px;
     width: 100px;
     padding: 25px;
-    
     &:hover {
       cursor: pointer;
       -webkit-animation:spin 0.5s linear infinite;
@@ -19,23 +22,19 @@
       @-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
       @keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }
     }
-  }
+`;
 
-  
-
-  .nav-links-container {
+export const NavLinks = styled.div`
     width: 50%;
     height: 100%;
     display: flex;
     align-items: center;
     justify-content: flex-end;
     padding-right: 10px;
-    
+`;
 
-    .nav-link {
-      padding: 20px 25px;
-      cursor: pointer;
-      user-select: none;
-    }
-  }
-}
+export const NavLink = styled(Link)`
+    padding: 20px 25px;
+    cursor: pointer;
+    user-select: none;
+`;
