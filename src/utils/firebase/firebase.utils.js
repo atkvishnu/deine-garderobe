@@ -110,7 +110,7 @@ export const createUserDocumentFromRedirect = async (userAuth) => {
     if (!userAuth) return;
 
     const userDocRef = doc(db, 'usersFromRedirect', userAuth.uid);
-    console.log("🚀userDocRef : ", { userDocRef });
+    // console.log("🚀userDocRef : ", { userDocRef });
 
     const userSnapshot = await getDoc(userDocRef);
     // console.log(userSnapshot);
@@ -144,7 +144,7 @@ export const signInAuthUserWithEmailAndPassword = async (email, password) => {
     if (!email || !password) {
         return;     // 404 kind page component
     }
-    console.log(auth);
+    // console.log(auth);
     return await signInWithEmailAndPassword(auth, email, password);
 }
 

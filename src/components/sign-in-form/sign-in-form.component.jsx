@@ -1,12 +1,18 @@
 import { SignInContainer, ButtonsContainer } from './sign-in-form.styles.jsx';
 
-import { useState, useEffect } from 'react';
-import { auth, signInWithGooglePopup, signInWithGoogleRedirect, createUserDocumentFromAuth, createAuthUserWithEmailAndPassword, signInAuthUserWithEmailAndPassword } from '../../utils/firebase/firebase.utils';
-import { getRedirectResult } from 'firebase/auth';
+import { useState } from 'react';
+import { signInWithGooglePopup, signInAuthUserWithEmailAndPassword } from '../../utils/firebase/firebase.utils';
+
+
+// sign in with redirect requirements:
+// import { useEffect } from 'react';
+// import { auth, signInWithGoogleRedirect, createUserDocumentFromAuth, createAuthUserWithEmailAndPassword } from '../../utils/firebase/firebase.utils';
+// import { getRedirectResult } from 'firebase/auth';
 
 
 import FormInput from '../form-input/form-input.component';
 import Button, { BUTTON_TYPE_CLASSES } from '../button/button.component';
+
 // password is sensitive info., so we need to use firebase auth.
 // firebase auth will figure whether or not the password matches with the user (it's obfuscated from us)
 const defaultFormFields = {     // common ground between logic of state management
@@ -32,7 +38,7 @@ const SignInForm = () => {
             const { user } = await signInAuthUserWithEmailAndPassword(email, password);
             // console.log(response);
             // setCurrentUser(user);
-            console.log(user);
+            console.log(user.email);
             resetFormFields();  // clear the form fields
         } catch (error) {
 
@@ -44,7 +50,7 @@ const SignInForm = () => {
                     alert('Wrong password!');
                     break;
                 default:
-                    console.log(error);
+                    alert(error);
             }
         }
     }

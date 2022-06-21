@@ -22,7 +22,7 @@ export const UserProvider = ({ children }) => {
                 createUserDocumentFromAuth(user);
             }
             setCurrentUser(user);
-            console.log(user);
+            // console.log(user);
         });
         return unsubscribe;     // unsubscribe from the listener when the component unmounts
     }, [])
